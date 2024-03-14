@@ -2,7 +2,9 @@ document.write(`
     
     <div class="sidebar">
         <div class="sidebar-top">
-            <img class="sidebar-logo" src="assets/logo.png" alt="logooo">
+            <a href="/index.html">
+                <img class="sidebar-logo" src="assets/logo.png" alt="logooo">
+            </a>
             <div class="sidebar-navigation">
                 <a href="/play.html">
                     <span class="material-symbols-outlined">

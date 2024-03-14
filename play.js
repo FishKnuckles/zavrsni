@@ -1,7 +1,6 @@
 let canvas = document.getElementById("canvas");
 let ctx = canvas.getContext("2d");
 
-
 let grid = [
     [1, 2, 3, 4, 5, 6, 7, 8, 9],
     [1, 2, 3, 4, 5, 6, 0, 8, 9],
@@ -16,14 +15,31 @@ let grid = [
 
 function Draw() {
     parent_bb = canvas.parentElement.getBoundingClientRect();
+    window_bb = document.getElementsByTagName("body")[0].getBoundingClientRect();
     canvas.width = parent_bb.width;
     canvas.height = parent_bb.height;
 
     let min = Math.min(canvas.width, canvas.height);
-    let gridSize = min*0.8;
-    let cellSize = gridSize/9 ;
-    let xOffset = (canvas.width - gridSize)/2;
-    let yOffset = (canvas.height - gridSize)/2;
+    gridSize = min*0.8;
+    cellSize = gridSize/9 ;
+    xOffset = (canvas.width - gridSize)/2;
+    yOffset = (canvas.height - gridSize)/2;
+    canvasOffset = window_bb.width - canvas.width;
+
+    ctx.fillStyle = "#4F4557";
+    ctx.fillRect(xOffset, yOffset, gridSize, gridSize);
+    if(!    (selectedCell[0] == -1 && selectedCell[1] == -1)){
+        ctx.fillStyle = "red";
+        console.log(selectedCell[0],selectedCell[1]);
+        ctx.fillRect(
+            xOffset + selectedCell[0]*cellSize,
+            yOffset + selectedCell[1]*cellSize,
+            cellSize,
+            cellSize
+        );
+    }
+
+    ctx.strokeStyle = "#6D5D6E";
 
     ctx.lineWidth = 10;
     ctx.rect(xOffset, yOffset, gridSize, gridSize);
@@ -36,6 +52,7 @@ function Draw() {
         else {
             ctx.lineWidth = 1;
         }
+        
         ctx.moveTo(xOffset+cellSize*i, yOffset);
         ctx.lineTo(xOffset+cellSize*i, yOffset+gridSize);
         ctx.moveTo(xOffset, yOffset+cellSize*i);
@@ -45,6 +62,7 @@ function Draw() {
     let fontSize = cellSize/2;
     ctx.font = `${fontSize}px Arial`;
     let x, y, xCenter, yCenter, textSize;
+    ctx.fillStyle = "#F4EEE0";
     for (let i = 0; i < grid.length; i++) {
         for (let j = 0; j < grid[i].length; j++) {
             if (grid[i][j] === 0) continue;
@@ -52,12 +70,36 @@ function Draw() {
             yCenter = (7/8*cellSize - fontSize)/2 + fontSize;
             x = xOffset+xCenter+cellSize*j;
             y = yOffset+yCenter+cellSize*i;
-            console.log(x, y);
             ctx.fillText(grid[i][j], x, y);
         }
 
     }
     
 }
+
+let gridSize;
+let cellSize;
+let xOffset;
+let yOffset;
+let canvasOffset;
+let selectedCell = [-1, -1];
+
+
+canvas.addEventListener('click', (e) => {
+    let x = e.clientX;
+    let y = e.clientY;
+    let xTotal = xOffset + canvasOffset - 10;
+    if (!(x > xTotal && x < (gridSize + xTotal))){
+        return;
+    }
+    if(!(y > yOffset && y < (gridSize + yOffset))) {
+        return;
+    }
+    let selectedCellX = Math.floor((x - xTotal)/cellSize);
+    let selectedCellY = Math.floor((y - yOffset)/cellSize);
+    selectedCell = [selectedCellX, selectedCellY];
+    Draw();
+});
+
 Draw();
 window.addEventListener("resize", Draw);
