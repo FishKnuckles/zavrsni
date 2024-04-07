@@ -1,7 +1,8 @@
 body {
     background-color: var(--background1);
+    display: table;
 }
 #canvas-div {
-    width: 100%;
-    height: 100vh;
+    display: table-cell;
+    width: 80%;
 }

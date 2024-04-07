@@ -26,10 +26,10 @@ function Draw() {
     yOffset = (canvas.height - gridSize)/2;
     canvasOffset = window_bb.width - canvas.width;
 
-    ctx.fillStyle = "#4F4557";
+    ctx.fillStyle = "#271136";
     ctx.fillRect(xOffset, yOffset, gridSize, gridSize);
-    if(!    (selectedCell[0] == -1 && selectedCell[1] == -1)){
-        ctx.fillStyle = "red";
+    if(!(selectedCell[0] == -1 && selectedCell[1] == -1)){
+        ctx.fillStyle = "#8E58B1";
         console.log(selectedCell[0],selectedCell[1]);
         ctx.fillRect(
             xOffset + selectedCell[0]*cellSize,
@@ -39,7 +39,7 @@ function Draw() {
         );
     }
 
-    ctx.strokeStyle = "#6D5D6E";
+    ctx.strokeStyle = "#57336E";
 
     ctx.lineWidth = 10;
     ctx.rect(xOffset, yOffset, gridSize, gridSize);
@@ -62,7 +62,7 @@ function Draw() {
     let fontSize = cellSize/2;
     ctx.font = `${fontSize}px Arial`;
     let x, y, xCenter, yCenter, textSize;
-    ctx.fillStyle = "#F4EEE0";
+    ctx.fillStyle = "#B3B6C5";
     for (let i = 0; i < grid.length; i++) {
         for (let j = 0; j < grid[i].length; j++) {
             if (grid[i][j] === 0) continue;

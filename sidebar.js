@@ -41,13 +41,13 @@ document.write(`
 
         <div class="sidebar-bottom">
             <div class="sidebar-navigation">
-                <a href="#">
+                <a href="/help.html">
                     <span class="material-symbols-outlined">
                         help
                     </span>
                     Help
                 </a>
-                <a href="#">
+                <a href="/info.html">
                     <span class="material-symbols-outlined">
                         info
                     </span>

@@ -1,8 +1,9 @@
 :root {
-    --background1: #393646;
-    --background2: #4F4557;
-    --highlight: #6D5D6E;
-    --text: #F4EEE0;
+    --background1: #271136;
+    --background2: #321241;
+    --highlight: #8E58B1;
+    --text: #B3B6C5;
+    --sidebar: #38184E;
 }
 
 * {
@@ -14,3 +15,16 @@ body {
     display: flex;
     flex-direction: row;
 }
+
+body::-webkit-scrollbar {
+    width: 0.5rem;
+}
+
+body::-webkit-scrollbar-track {
+    background: #1C1137;
+}
+
+body::-webkit-scrollbar-thumb {
+    background: var(--background2);
+}
+
