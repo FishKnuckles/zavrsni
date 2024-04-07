@@ -5,4 +5,8 @@ body {
 #canvas-div {
     display: table-cell;
     width: 80%;
+
+}
+canvas {
+    height: 100vh;
 }
