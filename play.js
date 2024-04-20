@@ -2,15 +2,15 @@ let canvas = document.getElementById("canvas");
 let ctx = canvas.getContext("2d");
 
 let grid = [
-    [1, 2, 3, 4, 5, 6, 7, 8, 9],
-    [1, 2, 3, 4, 5, 6, 0, 8, 9],
-    [1, 2, 0, 4, 5, 6, 7, 8, 9],
-    [1, 2, 3, 4, 5, 6, 7, 8, 9],
-    [1, 2, 3, 4, 5, 6, 7, 8, 9],
-    [1, 2, 3, 4, 5, 6, 7, 8, 9],
-    [1, 2, 3, 4, 5, 6, 7, 8, 9],
-    [1, 2, 3, 4, 5, 6, 0, 8, 9],
-    [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    ["0", "0", "4", "0", "5", "0", "0", "0", "0"],
+    ["9", "0", "0", "7", "3", "4", "6", "0", "0"],
+    ["0", "0", "3", "0", "2", "1", "0", "4", "9"],
+    ["0", "3", "5", "0", "9", "0", "4", "8", "0"],
+    ["0", "9", "0", "0", "0", "0", "0", "3", "0"],
+    ["0", "7", "6", "0", "1", "0", "9", "2", "0"],
+    ["3", "1", "0", "9", "7", "0", "2", "0", "0"],
+    ["0", "0", "9", "1", "8", "2", "0", "0", "3"],
+    ["0", "0", "0", "0", "6", "0", "1", "0", "0"]
   ];
 
 function Draw() {
@@ -65,7 +65,7 @@ function Draw() {
     ctx.fillStyle = "#B3B6C5";
     for (let i = 0; i < grid.length; i++) {
         for (let j = 0; j < grid[i].length; j++) {
-            if (grid[i][j] === 0) continue;
+            if (grid[i][j] === "0") continue;
             xCenter = (cellSize - ctx.measureText(grid[i][j]).width)/2;
             yCenter = (7/8*cellSize - fontSize)/2 + fontSize;
             x = xOffset+xCenter+cellSize*j;
@@ -103,3 +103,39 @@ canvas.addEventListener('click', (e) => {
 
 Draw();
 window.addEventListener("resize", Draw);
+
+function isValid() {
+    let rowSet = new Set();
+    let columnSet = new Set();
+    let boxSet = new Set();
+
+    for (let i = 0; i < 9; i++) {
+        for (let j = 0; j < 9; j++) {
+            let rowNum = grid[i][j];
+            let columnNum = grid[j][i];
+            let boxNum = grid[3 * Math.floor(i/3) + Math.floor(j/3)][((i * 3) % 9) + (j % 3)];
+
+            if(rowNum !== "0") {
+                if (rowSet.has(rowNum)) return false;
+                rowSet.add(rowNum);
+            }
+            if(columnNum !== "0") {
+                if (columnSet.has(columnNum)) return false;
+                columnSet.add(columnNum);
+            }
+            if(boxNum !== "0") {
+                if (boxSet.has(boxNum)) return false;
+                boxSet.add(boxNum);
+            }
+        }
+        rowSet.clear();
+        columnSet.clear();
+        boxSet.clear();
+    }
+    return true;
+}
+//if(isValid() === true) {
+  //  document.getElementById("solve-button").style.color = "#00ff00";}
+
+function solve() {}
+function hint() {}

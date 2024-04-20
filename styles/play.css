@@ -4,9 +4,13 @@ body {
 }
 #canvas-div {
     display: table-cell;
-    width: 80%;
+    width: 60%;
 
 }
 canvas {
     height: 100vh;
+}
+#button-div {
+    padding: 0.2em;
+    
 }

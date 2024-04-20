@@ -2,11 +2,11 @@ document.write(`
     
     <div class="sidebar">
         <div class="sidebar-top">
-            <a href="/index.html">
+            <a href="./index.html">
                 <img class="sidebar-logo" src="assets/logo.png" alt="logooo">
             </a>
             <div class="sidebar-navigation">
-                <a href="/play.html">
+                <a href="./play.html">
                     <span class="material-symbols-outlined">
                         play_arrow
                     </span>
@@ -41,13 +41,13 @@ document.write(`
 
         <div class="sidebar-bottom">
             <div class="sidebar-navigation">
-                <a href="/help.html">
+                <a href="./help.html">
                     <span class="material-symbols-outlined">
                         help
                     </span>
                     Help
                 </a>
-                <a href="/info.html">
+                <a href="./info.html">
                     <span class="material-symbols-outlined">
                         info
                     </span>
