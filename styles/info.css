@@ -8,6 +8,7 @@ body {
     height: 100vh;
     text-align: center;
     margin: 10%;
+    margin-left: 40vh;
 }
 
 #content-div > p {

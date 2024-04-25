@@ -1,6 +1,17 @@
 let canvas = document.getElementById("canvas");
 let ctx = canvas.getContext("2d");
 
+let originalGrid = [
+    ["0", "0", "4", "0", "5", "0", "0", "0", "0"],
+    ["9", "0", "0", "7", "3", "4", "6", "0", "0"],
+    ["0", "0", "3", "0", "2", "1", "0", "4", "9"],
+    ["0", "3", "5", "0", "9", "0", "4", "8", "0"],
+    ["0", "9", "0", "0", "0", "0", "0", "3", "0"],
+    ["0", "7", "6", "0", "1", "0", "9", "2", "0"],
+    ["3", "1", "0", "9", "7", "0", "2", "0", "0"],
+    ["0", "0", "9", "1", "8", "2", "0", "0", "3"],
+    ["0", "0", "0", "0", "6", "0", "1", "0", "0"]
+  ];
 let grid = [
     ["0", "0", "4", "0", "5", "0", "0", "0", "0"],
     ["9", "0", "0", "7", "3", "4", "6", "0", "0"],
@@ -12,6 +23,24 @@ let grid = [
     ["0", "0", "9", "1", "8", "2", "0", "0", "3"],
     ["0", "0", "0", "0", "6", "0", "1", "0", "0"]
   ];
+let solutionGrid = [
+    ["0", "0", "4", "0", "5", "0", "0", "0", "0"],
+    ["9", "0", "0", "7", "3", "4", "6", "0", "0"],
+    ["0", "0", "3", "0", "2", "1", "0", "4", "9"],
+    ["0", "3", "5", "0", "9", "0", "4", "8", "0"],
+    ["0", "9", "0", "0", "0", "0", "0", "3", "0"],
+    ["0", "7", "6", "0", "1", "0", "9", "2", "0"],
+    ["3", "1", "0", "9", "7", "0", "2", "0", "0"],
+    ["0", "0", "9", "1", "8", "2", "0", "0", "3"],
+    ["0", "0", "0", "0", "6", "0", "1", "0", "0"]
+  ];
+  
+let gridSize;
+let cellSize;
+let xOffset;
+let yOffset;
+let canvasOffset;
+let selectedCell = [-1, -1];
 
 function Draw() {
     parent_bb = canvas.parentElement.getBoundingClientRect();
@@ -21,7 +50,7 @@ function Draw() {
 
     let min = Math.min(canvas.width, canvas.height);
     gridSize = min*0.8;
-    cellSize = gridSize/9 ;
+    cellSize = gridSize/9;
     xOffset = (canvas.width - gridSize)/2;
     yOffset = (canvas.height - gridSize)/2;
     canvasOffset = window_bb.width - canvas.width;
@@ -30,24 +59,26 @@ function Draw() {
     ctx.fillRect(xOffset, yOffset, gridSize, gridSize);
     if(!(selectedCell[0] == -1 && selectedCell[1] == -1)){
         ctx.fillStyle = "#8E58B1";
-        console.log(selectedCell[0],selectedCell[1]);
+        console.log(selectedCell[0], selectedCell[1]);
         ctx.fillRect(
             xOffset + selectedCell[0]*cellSize,
             yOffset + selectedCell[1]*cellSize,
             cellSize,
             cellSize
         );
+        console.log(xOffset + selectedCell[0]*cellSize,
+            yOffset + selectedCell[1]*cellSize);
     }
 
     ctx.strokeStyle = "#57336E";
 
-    ctx.lineWidth = 10;
+    ctx.lineWidth = 1;
     ctx.rect(xOffset, yOffset, gridSize, gridSize);
     ctx.stroke();
     for(let i = 0; i<9; i++) {
         ctx.beginPath();
-        if(i%3 === 0) {
-            ctx.lineWidth = 5;
+        if(i%3 === 0 && i !== 0) {
+            ctx.lineWidth = 4;
         }
         else {
             ctx.lineWidth = 1;
@@ -59,9 +90,10 @@ function Draw() {
         ctx.lineTo(xOffset+gridSize, yOffset+cellSize*i);
         ctx.stroke();
     }
-    let fontSize = cellSize/2;
+
+    let x, y, xCenter, yCenter, fontSize;
+    fontSize = cellSize/2;
     ctx.font = `${fontSize}px Arial`;
-    let x, y, xCenter, yCenter, textSize;
     ctx.fillStyle = "#B3B6C5";
     for (let i = 0; i < grid.length; i++) {
         for (let j = 0; j < grid[i].length; j++) {
@@ -75,20 +107,13 @@ function Draw() {
 
     }
     
-}
-
-let gridSize;
-let cellSize;
-let xOffset;
-let yOffset;
-let canvasOffset;
-let selectedCell = [-1, -1];
-
+} 
 
 canvas.addEventListener('click', (e) => {
     let x = e.clientX;
     let y = e.clientY;
-    let xTotal = xOffset + canvasOffset - 10;
+    console.log(x, y);
+    let xTotal = xOffset + canvasOffset/2 - 10;
     if (!(x > xTotal && x < (gridSize + xTotal))){
         return;
     }
@@ -104,36 +129,64 @@ canvas.addEventListener('click', (e) => {
 Draw();
 window.addEventListener("resize", Draw);
 
-function isValid() {
-    let rowSet = new Set();
-    let columnSet = new Set();
-    let boxSet = new Set();
-
-    for (let i = 0; i < 9; i++) {
-        for (let j = 0; j < 9; j++) {
-            let rowNum = grid[i][j];
-            let columnNum = grid[j][i];
-            let boxNum = grid[3 * Math.floor(i/3) + Math.floor(j/3)][((i * 3) % 9) + (j % 3)];
-
-            if(rowNum !== "0") {
-                if (rowSet.has(rowNum)) return false;
-                rowSet.add(rowNum);
-            }
-            if(columnNum !== "0") {
-                if (columnSet.has(columnNum)) return false;
-                columnSet.add(columnNum);
-            }
-            if(boxNum !== "0") {
-                if (boxSet.has(boxNum)) return false;
-                boxSet.add(boxNum);
+function isValid(number, row, col, board){
+    for(let i = 0; i<grid.length; i++) {
+        if(grid[row][i] === number || grid[i][col] === number) {
+            return false;
+        }
+        //proverava 3x3 subgridove
+        
+        let startRow = Math.floor(row / 3) *3;
+        let startCol = Math.floor(col / 3) *3;
+        
+        for(let i = startRow; i < startRow+3; i++) {
+            for(let j = startCol; j < startCol+3; j++) {
+                if(board[i][j] === number) {
+                    return false;
+                }
             }
         }
-        rowSet.clear();
-        columnSet.clear();
-        boxSet.clear();
     }
     return true;
 }
+
+let possibleNumbers = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
+var solve = function(grid) {
+    let emptySpaces = [];
+    
+    for(let i = 0; i<grid.length; i++) {
+        for(j = 0; j<board.length; j++) {
+            if(grid[i][j] === "0") {
+                emptySpaces.push({row: i, col: j});
+            }
+        }
+    }
+
+    function recurse(emptySpaceIndex) {
+        if(emptySpaceIndex >= emptySpaces.length){
+            return true;
+        }
+
+        const {row, col} = emptySpaces[emptySpaceIndex+1];
+
+        for(let i = 0; i<possibleNumbers.length; i++) {
+            let num = possibleNumbers[i];
+            if(isValid(num,row,col,board)){
+                board[row][col] = num;
+
+                if(recurse(emptySpaceIndex+1)){
+                    return true;
+                }
+                board[row][col] = "0";
+            }
+        }
+        return false;
+    }
+    recurse(0);
+
+    return grid;
+}
+
 //if(isValid() === true) {
   //  document.getElementById("solve-button").style.color = "#00ff00";}
 

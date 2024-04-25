@@ -6,54 +6,54 @@ document.write(`
                 <img class="sidebar-logo" src="assets/logo.png" alt="logooo">
             </a>
             <div class="sidebar-navigation">
-                <a href="./play.html">
+                <a class="nav-link" href="./play.html">
                     <span class="material-symbols-outlined">
                         play_arrow
                     </span>
-                    Play
+                    <span class="link-text">Play</span>
                 </a>
-                <a href="#">
+                <a class="nav-link" href="./create.html">
                     <span class="material-symbols-outlined">
                         today
                     </span>
-                    Daily Challenge
+                    <span class="link-text">Create grid</span>
                 </a>
-                <a href="#">
+                <a class="nav-link" href="#">
                     <span class="material-symbols-outlined">
                         trophy
                     </span>
-                    Leaderboard
+                    <span class="link-text">Leaderboard</span>
                 </a>
-                <a href="#">
+                <a class="nav-link" href="#">
                     <span class="material-symbols-outlined">
                         group
                     </span>
-                    Duels
+                    <span class="link-text">Duels</span>
                 </a>
-                <a href="#">
+                <a class="nav-link" href="#">
                     <span class="material-symbols-outlined">
                         account_circle
                     </span>
-                    Account
+                    <span class="link-text">Account</span>
                 </a>
             </div>
         </div>
 
         <div class="sidebar-bottom">
             <div class="sidebar-navigation">
-                <a href="./help.html">
+                <a class="nav-link" href="./help.html">
                     <span class="material-symbols-outlined">
                         help
                     </span>
                     Help
                 </a>
-                <a href="./info.html">
+                <a class="nav-link" href="./info.html">
                     <span class="material-symbols-outlined">
                         info
                     </span>
                     Info
                 </a>
-                <a href="#">
+                <a class="nav-link" href="#">
                     <span class="material-symbols-outlined">
                         settings
                     </span>
